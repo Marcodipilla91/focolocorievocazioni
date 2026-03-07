@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocoLoco - Gioco Medievale</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=MedievalSharp&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1a100b;
+            --text-color: #f4e8cc;
+            --primary: #c42b1c;
+            --primary-hover: #9c2014;
+            --gold: #d4af37;
+            --dark-gold: #aa8c2c;
+            --border: #4a3424;
+            --surface: #2b1f18;
+            --font-title: 'Cinzel', serif;
+            --font-body: 'MedievalSharp', cursive;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            background-image:
+                linear-gradient(rgba(15, 5, 0, 0.75), rgba(5, 0, 0, 0.9)),
+                url('https://image.pollinations.ai/prompt/epic%20medieval%20battlefield%20camp,%20colorful%20jesters%20and%20fools%20performing%20acrobatic%20tricks%20and%20making%20fully%20armored%20knights%20burst%20into%20laughter,%20cinematic%20lighting,%20hyperdetailed?width=1920&height=1080&nologo=true');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-color);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        /* Tela per le braci (embers) animate */
+        #embers-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .logo-container {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .logo-container img {
+            max-width: 250px;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2));
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .container {
+            width: 90%;
+            max-width: 650px;
+            margin: 0 auto 3rem auto;
+            text-align: center;
+            /* Texture stile pergamena scura / perimetro epico */
+            background: linear-gradient(145deg, rgba(30, 18, 12, 0.95), rgba(15, 8, 4, 0.98));
+            backdrop-filter: blur(10px);
+            border: 2px solid #5a3e2b;
+            border-radius: 12px;
+            padding: 3.5rem;
+            box-shadow:
+                0 0 0 2px rgba(212, 175, 55, 0.3),
+                0 30px 60px rgba(0, 0, 0, 0.95),
+                inset 0 0 80px rgba(0, 0, 0, 0.8),
+                inset 0 0 20px rgba(212, 175, 55, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Ornate corners */
+        .container::before,
+        .container::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--gold);
+            opacity: 0.85;
+            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
+        }
+
+        .container::before {
+            top: -10px;
+            left: -10px;
+            border-bottom: none;
+            border-right: none;
+            border-radius: 8px 0 0 0;
+        }
+
+        .container::after {
+            bottom: -10px;
+            right: -10px;
+            border-top: none;
+            border-left: none;
+            border-radius: 0 0 8px 0;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: var(--font-title);
+            color: var(--gold);
+            text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.9), 0 0 15px rgba(212, 175, 55, 0.3);
+            margin-top: 0;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to bottom, #ffffff, var(--gold), var(--dark-gold));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+        }
+
+        .intro-text-box {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--gold);
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .intro-text-box p {
+            margin-bottom: 0.8rem;
+            text-shadow: 2px 2px 4px #000;
+            color: #fff;
+        }
+
+        p {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), #8a1710);
+            color: #fff;
+            border: 2px solid var(--gold);
+            padding: 1rem 2rem;
+            font-family: var(--font-title);
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(196, 43, 28, 0.5);
+            text-transform: uppercase;
+            width: 100%;
+            max-width: 350px;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, var(--primary-hover), #6b0f0b);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(196, 43, 28, 0.8), 0 0 15px var(--gold);
+            border-color: #fff;
+        }
+
+        .btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            border-color: #444;
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--gold);
+            font-family: var(--font-title);
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        input[type="text"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(10, 5, 0, 0.8);
+            border: 1px solid var(--border);
+            border-bottom: 2px solid var(--gold);
+            color: var(--text-color);
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            border-radius: 4px 4px 0 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            background: rgba(20, 10, 0, 0.9);
+            border-color: var(--gold);
+            box-shadow: inset 0 -15px 25px -15px rgba(212, 175, 55, 0.5);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            color: var(--text-color);
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+        }
+
+        .radio-label input {
+            margin-right: 0.5rem;
+            accent-color: var(--primary);
+        }
+
+        /* Wheel of Fortune */
+        .wheel-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 2.5rem auto;
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 10px solid #3d2314;
+            position: relative;
+            overflow: hidden;
+            transition: transform 5s cubic-bezier(0.2, 0.8, 0.1, 1);
+            box-shadow:
+                0 0 0 5px var(--gold),
+                0 0 40px rgba(0, 0, 0, 0.95),
+                inset 0 0 50px rgba(0, 0, 0, 0.8);
+            background: var(--surface);
+        }
+
+        .wheel-center-nub {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 45px;
+            height: 45px;
+            background: radial-gradient(circle, #fcdb73, var(--gold), var(--dark-gold));
+            border-radius: 50%;
+            z-index: 10;
+            border: 3px solid #2b1c11;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 1);
+        }
+
+        .pointer {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-top: 50px solid var(--gold);
+            z-index: 11;
+            filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.9));
+        }
+
+        /* Inner graphics for the slices */
+        .slice-content {
+            position: absolute;
+            bottom: 50%;
+            right: 50%;
+            transform-origin: bottom right;
+            width: 180px;
+            /* Metà della ruota ca */
+            height: 180px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 15px;
+            /* Distanza dal bordo esterno */
+            box-sizing: border-box;
+            z-index: 2;
+        }
+
+        /* L'immagine all'interno dello spicchio */
+        .slice-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            object-fit: cover;
+            margin-bottom: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+        }
+
+        .slice-text {
+            font-size: 0.85rem;
+            font-weight: bold;
+            font-family: var(--font-body);
+            color: #fff;
+            text-shadow: 1px 1px 4px #000, 0 0 5px #000;
+            line-height: 1.1;
+            padding: 0 10px;
+        }
+
+        .win-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85%;
+            max-width: 500px;
+            z-index: 1000;
+            background: linear-gradient(145deg, #2b1f18, #1a100b);
+            padding: 2.5rem;
+            border-radius: 15px;
+            border: 3px solid var(--gold);
+            box-shadow: 0 0 100px rgba(0, 0, 0, 1), 0 0 20px var(--gold);
+            text-align: center;
+        }
+
+        .win-banner-title {
+            font-family: var(--font-title);
+            color: var(--gold);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .win-img {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 4px solid var(--gold);
+            margin: 15px auto;
+            display: block;
+            object-fit: cover;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.4), 0 5px 20px rgba(0, 0, 0, 0.8);
+            background: #fff;
+            /* Per far risaltare il fiammifero se ha sfondo bianco */
+        }
+
+        /* Personaggio Animato (Fiammetta o Tambo) */
+        .character-popup {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 1.5rem;
+            animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .character-popup img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 4px solid var(--gold);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9);
+            margin-bottom: 0.5rem;
+            object-fit: cover;
+        }
+
+        .character-speech {
+            background: #fff;
+            color: #1a100b;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-family: var(--font-body);
+            font-weight: bold;
+            font-size: 1.1rem;
+            position: relative;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.8);
+            max-width: 90%;
+            margin-bottom: 15px;
+            border: 2px solid var(--dark-gold);
+        }
+
+        .character-speech::before {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 12px 12px 0 12px;
+            border-style: solid;
+            border-color: #fff transparent transparent transparent;
+            z-index: 2;
+        }
+
+        .character-speech::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 14px 14px 0 14px;
+            border-style: solid;
+            border-color: var(--dark-gold) transparent transparent transparent;
+            z-index: 1;
+        }
+
+        /* Splash Screen */
+        #section-splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle, #2b1f18, #000);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .splash-img {
+            max-width: 90%;
+            max-height: 60vh;
+            border: 4px solid var(--gold);
+            border-radius: 15px;
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.4);
+            margin-bottom: 2rem;
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 50px rgba(212, 175, 55, 0.4);
+            }
+
+            50% {
+                transform: scale(1.02);
+                box-shadow: 0 0 80px rgba(212, 175, 55, 0.6);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 50px rgba(212, 175, 55, 0.4);
+            }
+        }
+
+        .splash-welcome {
+            font-family: var(--font-title);
+            color: var(--gold);
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px #000;
+        }
+
+        /* Fine Details */
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 1.5rem 0;
+        }
+
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid var(--gold);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Media queries (Responsiveness) */
+        @media(max-width: 768px) {
+            .container {
+                padding: 2rem;
+                width: 85%;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+                letter-spacing: 2px;
+            }
+
+            .wheel-container {
+                width: 340px;
+                height: 340px;
+            }
+
+            .slice-content {
+                width: 150px;
+                height: 150px;
+                padding-top: 12px;
+            }
+
+            .slice-img {
+                width: 60px;
+                height: 60px;
+            }
+
+            .slice-text {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media(max-width: 480px) {
+            .container {
+                padding: 1.5rem 1rem;
+                width: 90%;
+            }
+
+            h1 {
+                font-size: 1.7rem;
+                letter-spacing: 1px;
+            }
+
+            p {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            .btn {
+                font-size: 1.05rem;
+                padding: 0.8rem 1rem;
+            }
+
+            .wheel-container {
+                width: 290px;
+                height: 290px;
+                margin: 1.5rem auto;
+            }
+
+            .slice-content {
+                width: 130px;
+                height: 130px;
+                padding-top: 8px;
+            }
+
+            .slice-img {
+                width: 45px;
+                height: 45px;
+                margin-bottom: 2px;
+            }
+
+            .slice-text {
+                font-size: 0.65rem;
+                line-height: 1;
+                padding: 0 5px;
+            }
+
+            .pointer {
+                top: -20px;
+                border-left: 15px solid transparent;
+                border-right: 15px solid transparent;
+                border-top: 30px solid var(--gold);
+            }
+
+            .wheel-center-nub {
+                width: 35px;
+                height: 35px;
+            }
+
+            .character-speech {
+                font-size: 0.95rem;
+                padding: 0.8rem 1rem;
+            }
+
+            .character-popup img {
+                width: 100px;
+                height: 100px;
+            }
+
+            .win-message {
+                padding: 1.5rem;
+                width: 92%;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+
+            .win-banner-title {
+                font-size: 1.6rem;
+            }
+
+            .win-img {
+                width: 120px;
+                height: 120px;
+            }
+
+            .character-popup img {
+                width: 140px;
+                height: 140px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SFONDO CON PARTICELLE DI BRACI (ANIMAZIONE LEGGERE E PERFORMANTE) -->
+    <canvas id="embers-canvas"></canvas>
+
+    <!-- SEZIONE INTRO SPLASH -->
+    <div id="section-splash">
+        <img src="assets/tambo_flambe.png" alt="Tambo e Flambe" class="splash-img">
+        <div class="splash-welcome">Benvenuto dal Regno di FocoLoco</div>
+    </div>
+
+    <div class="logo-container">
+        <!-- Logo ufficale FOCOLOCO dal sito -->
+        <img src="https://www.focoloco.it/assets/images/logo.png" alt="Foco Loco Logo">
+    </div>
+
+    <div class="container">
+        <!-- SEZIONE 1: INTRO -->
+        <div id="section-intro" class="section">
+            <h1>Benvenuto Viandante!</h1>
+            <div class="divider"></div>
+            <div class="intro-text-box">
+                <p>Sei giunto alla fiera <strong>Armi e Bagagli di Piacenza</strong> ed hai incrociato il cammino di
+                    <strong>FocoLoco</strong>.
+                </p>
+                <p>I nostri giullari ridono, i cavalieri gioiscono! Abbiamo in serbo per te sorprese e meraviglie, ma
+                    solo i più audaci osano sfidare la sorte.</p>
+            </div>
+            <button class="btn" onclick="showSection('section-form')">Partecipa al Gioco e vinci</button>
+        </div>
+
+        <!-- SEZIONE 2: FORM -->
+        <div id="section-form" class="section">
+            <h2>Lascia la tua firma</h2>
+            <p>Prima di girare la sacra Rota Fortunae, facci sapere chi sei.</p>
+            <form id="leadForm" onsubmit="submitForm(event)">
+                <div class="form-group">
+                    <label for="nome">Nome *</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="cognome">Cognome *</label>
+                    <input type="text" id="cognome" name="cognome" required>
+                </div>
+                <div class="form-group">
+                    <label for="organizzazione">Organizzazione / Compagnia *</label>
+                    <input type="text" id="organizzazione" name="organizzazione" required>
+                </div>
+                <div class="form-group">
+                    <label for="cellulare">Cellulare (Facoltativo)</label>
+                    <input type="tel" id="cellulare" name="cellulare">
+                </div>
+                <div class="form-group">
+                    <label>Organizzi Eventi o Festival? *</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="organizzi_eventi" value="Sì" required> Sì
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="organizzi_eventi" value="No"> No
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="btn" id="submitBtn">Prosegui verso la Ruota</button>
+            </form>
+        </div>
+
+        <!-- SEZIONE 3: ROTA FORTUNAE -->
+        <div id="section-wheel" class="section">
+            <h2>La Rota Fortunae</h2>
+            <p>La sorte ti sorride! Clicca per girare e scoprire il tuo dono.</p>
+
+            <div class="wheel-container">
+                <div class="pointer"></div>
+                <div class="wheel" id="wheel">
+                    <!-- Spicchi e grafiche generati in Javascript -->
+                </div>
+                <div class="wheel-center-nub"></div>
+            </div>
+
+            <button class="btn" id="spinBtn" onclick="spinWheel()">Gira la Ruota!</button>
+
+            <div id="result-message" class="win-message" style="display: none;"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // Array dei premi con associazioni testo, colore, ed immagine grafica generata
+        const prizesData = [
+            {
+                text: "Fiammiferi FocoLoco",
+                color: "#d4af37",
+                textColor: "#1a100b",
+                image: "assets/fiammiferi.png"
+            },
+            {
+                text: "Portachiavi",
+                color: "#8a1710",
+                textColor: "#fff",
+                image: "assets/portachiavi.png"
+            },
+            {
+                text: "Foto con Lowell (Wolf)",
+                color: "#e8d5b5",
+                textColor: "#1a100b",
+                image: "assets/lowell.png"
+            },
+            {
+                text: "Vino Offerto",
+                color: "#4a3424",
+                textColor: "#fff",
+                image: "assets/vino_offerto.png"
+            }
+        ];
+
+        // Personaggi Speciali Animati per la vittoria
+        const characters = [
+            {
+                name: "Fiammetta",
+                image: "assets/flambetta.png",
+                speech: "Oh oh! Vienimi a cercare, perché hai vinto e vieni a riscuotere!"
+            },
+            {
+                name: "Tambo",
+                image: "assets/tambo.png",
+                speech: "Ehi tu! Vienimi a cercare, perché hai vinto e vieni a riscuotere!"
+            }
+        ];
+
+        // --- Splash Transition ---
+        function initiateSplashTransition() {
+            setTimeout(() => {
+                const splash = document.getElementById('section-splash');
+                if (splash) {
+                    splash.style.transition = 'opacity 1s ease';
+                    splash.style.opacity = '0';
+                    setTimeout(() => {
+                        splash.style.display = 'none';
+                        const intro = document.getElementById('section-intro');
+                        if (intro) intro.classList.add('active');
+                    }, 1000);
+                }
+            }, 3500); // 3.5 seconds splash
+        }
+
+        // Start splash timer immediately
+        initiateSplashTransition();
+
+        // --- Gestione UI Sezioni ---
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // --- Setup della Ruota ---
+        function setupWheel() {
+            const wheel = document.getElementById('wheel');
+            const totalSlices = prizesData.length;
+            const sliceAngle = 360 / totalSlices;
+
+            prizesData.forEach((prize, index) => {
+                // Slices are now empty as per request to be cleaner
+                // We just keep the colored background
+            });
+
+            // Imposta i colori di background a spicchio
+            let gradientStr = [];
+            let currentAngle = 0;
+            prizesData.forEach((prize) => {
+                gradientStr.push(`${prize.color} ${currentAngle}deg ${(currentAngle + sliceAngle)}deg`);
+                currentAngle += sliceAngle;
+            });
+            wheel.style.background = `conic-gradient(${gradientStr.join(', ')})`;
+        }
+
+        // Init Ruota
+        setupWheel();
+
+        // --- Logica Invio Dati ---
+        async function submitForm(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loader"></span> Invio al regno...';
+
+            const formData = new FormData(document.getElementById('leadForm'));
+            const dataObj = {};
+            formData.forEach((value, key) => { dataObj[key] = value; });
+
+            // SCRIPT URL: Qui dovrai incollare l'URL che otterrai dal punto 3 della guida (Apps Script)
+            const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyt2W6WM2YKqaLmXcQYuNd3zTbgg2AEFmcCBaDNdaEzWLDQhcXaWbV_K4z6RBRXmdDH/exec';
+
+            try {
+                // Invio reale dei dati al Google Sheet
+                // Nota: In locale/test senza URL reale questo darà errore, 
+                // ma il codice è pronto per la produzione.
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Necessario per Apps Script
+                    cache: 'no-cache',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataObj)
+                });
+
+                // Mostriamo la ruota dopo un piccolo feedback visivo
+                setTimeout(() => {
+                    showSection('section-wheel');
+                }, 500);
+
+            } catch (error) {
+                console.error('Errore:', error);
+                // In fiera, se c'è un calo di rete, permettiamo comunque di giocare dopo l'errore
+                // per non rovinare l'esperienza al lead
+                showSection('section-wheel');
+            }
+        }
+
+        // --- Logica Girare la Ruota ---
+        let isSpinning = false;
+        let nextCharacterIndex = 0; // Per alternarli uno alla volta
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+
+            const wheel = document.getElementById('wheel');
+            const spinBtn = document.getElementById('spinBtn');
+            const resultDiv = document.getElementById('result-message');
+
+            spinBtn.disabled = true;
+            resultDiv.style.display = 'none';
+
+            const randomPrizeIndex = Math.floor(Math.random() * prizesData.length);
+            const sliceAngle = 360 / prizesData.length;
+
+            // L'angolo sul quale fermarsi (il centro dello spicchio vincente alle "ore 12" o 0 gradi)
+            const targetRotation = 360 - (randomPrizeIndex * sliceAngle) - (sliceAngle / 2);
+
+            const spins = 1800; // 5 giri completi
+            const finalRotation = spins + targetRotation;
+
+            wheel.style.transition = 'transform 5s cubic-bezier(0.25, 0.1, 0.15, 1)';
+            wheel.style.transform = `rotate(${finalRotation}deg)`;
+
+            setTimeout(() => {
+                const wonPrize = prizesData[randomPrizeIndex];
+
+                // Alternanza fissa tra Fiammetta e Tambo
+                const char = characters[nextCharacterIndex];
+                nextCharacterIndex = (nextCharacterIndex + 1) % characters.length;
+
+                resultDiv.innerHTML = `
+                <div class="win-banner-title">Dono Conquistato!</div>
+                <div style="font-size: 1.4rem; color: #fff; margin-bottom: 1rem;">Hai ottenuto:</div>
+                <img src="${wonPrize.image}" class="win-img" alt="Premio vinto">
+                <div style="font-size: 2rem; font-weight: bold; color: var(--gold); margin-bottom: 2rem;">${wonPrize.text}</div>
+                
+                <div class="character-popup">
+                    <img src="${char.image}" alt="${char.name}">
+                    <div class="character-speech">"${char.speech}"</div>
+                    
+                    <a href="https://www.instagram.com/focoloco_rievocazioni?utm_source=ig_web_button_share_sheet&igsh=ODdmZWVhMTFiMw==" 
+                       target="_blank" class="btn" style="text-decoration:none; display:block; margin-top:1.5rem;">
+                       Segui le nostre Gesta su Instagram
+                    </a>
+                </div>
+                `;
+
+                resultDiv.style.display = 'block';
+                resultDiv.style.animation = 'fadeIn 1s ease';
+
+                wheel.style.transition = 'none';
+                wheel.style.transform = `rotate(${finalRotation % 360}deg)`;
+
+            }, 5000);
+        }
+
+        // --- Embers Animation System ---
+        const canvas = document.getElementById('embers-canvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+        const particles = [];
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        class Ember {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = height + Math.random() * 100;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * -3 - 1;
+                this.opacity = Math.random() * 0.8 + 0.2;
+                this.color = Math.random() > 0.5 ? '#ff4500' : '#ffa500';
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.opacity -= 0.005;
+                if (this.opacity <= 0 || this.y < -10) {
+                    this.x = Math.random() * width;
+                    this.y = height + 10;
+                    this.opacity = Math.random() * 0.8 + 0.2;
+                }
+            }
+            draw() {
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 70; i++) particles.push(new Ember());
+
+        function loopEmbers() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(loopEmbers);
+        }
+        loopEmbers();
+    </script>
+</body>
+
+</html>
