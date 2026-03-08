@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FocoLoco - Gioco Medievale</title>
+    <title>Foco Loco - Gioco Medievale</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=MedievalSharp&display=swap"
         rel="stylesheet">
     <style>
@@ -215,7 +215,8 @@
             text-shadow: 1px 1px 2px #000;
         }
         input[type="text"],
-        input[type="tel"] {
+        input[type="tel"],
+        input[type="email"] {
             width: 100%;
             padding: 1rem;
             background: rgba(10, 5, 0, 0.8);
@@ -395,6 +396,7 @@
             font-family: var(--font-body);
             font-weight: bold;
             font-size: 1.1rem;
+            line-height: 1.4;
             position: relative;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.8);
             max-width: 90%;
@@ -606,7 +608,7 @@
     <!-- SEZIONE INTRO SPLASH -->
     <div id="section-splash">
         <img src="tambo_flambe.png" alt="Tambo e Flambe" class="splash-img">
-        <div class="splash-welcome">Benvenuto dal Regno di FocoLoco</div>
+        <div class="splash-welcome">Foco Loco ti dà il benvenuto!</div>
     </div>
     <div class="logo-container">
         <!-- Logo ufficale FOCOLOCO dal sito -->
@@ -615,11 +617,11 @@
     <div class="container">
         <!-- SEZIONE 1: INTRO -->
         <div id="section-intro" class="section">
-            <h1>Benvenuto Viandante!</h1>
+            <h1>Foco Loco ti dà il benvenuto!</h1>
             <div class="divider"></div>
             <div class="intro-text-box">
                 <p>Sei giunto alla fiera <strong>Armi e Bagagli di Piacenza</strong> ed hai incrociato il cammino di
-                    <strong>FocoLoco</strong>.
+                    <strong>Foco Loco</strong>.
                 </p>
                 <p>I nostri giullari ridono, i cavalieri gioiscono! Abbiamo in serbo per te sorprese e meraviglie, ma
                     solo i più audaci osano sfidare la sorte.</p>
@@ -638,6 +640,10 @@
                 <div class="form-group">
                     <label for="cognome">Cognome *</label>
                     <input type="text" id="cognome" name="cognome" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required>
                 </div>
                 <div class="form-group">
                     <label for="organizzazione">Organizzazione / Compagnia *</label>
@@ -680,7 +686,7 @@
         // Array dei premi con associazioni testo, colore, ed immagine grafica generata
         const prizesData = [
             {
-                text: "Fiammiferi FocoLoco",
+                text: "Fiammiferi Foco Loco",
                 color: "#d4af37",
                 textColor: "#1a100b",
                 image: "fiammiferi.png"
@@ -709,12 +715,12 @@
             {
                 name: "Fiammetta",
                 image: "flambetta.png",
-                speech: "Oh oh! Vienimi a cercare, perché hai vinto e vieni a riscuotere!"
+                speech: "Hai vinto! Vienimi a cercare per riscuotere e se non mi trovi chiamami! <a href='tel:3281078655' style='color: var(--primary); text-decoration: underline;'>3281078655</a>"
             },
             {
                 name: "Tambo",
                 image: "tambo.png",
-                speech: "Ehi tu! Vienimi a cercare, perché hai vinto e vieni a riscuotere!"
+                speech: "Hai vinto! Vienimi a cercare per riscuotere e se non mi trovi chiamami! <a href='tel:3281078655' style='color: var(--primary); text-decoration: underline;'>3281078655</a>"
             }
         ];
         // --- Splash Transition ---
@@ -824,7 +830,7 @@
                 
                 <div class="character-popup">
                     <img src="${char.image}" alt="${char.name}">
-                    <div class="character-speech">"${char.speech}"</div>
+                    <div class="character-speech">${char.speech}</div>
                     
                     <a href="https://www.instagram.com/focoloco_rievocazioni?utm_source=ig_web_button_share_sheet&igsh=ODdmZWVhMTFiMw==" 
                        target="_blank" class="btn" style="text-decoration:none; display:block; margin-top:1.5rem;">
