@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,6 +20,7 @@
             --font-title: 'Cinzel', serif;
             --font-body: 'MedievalSharp', cursive;
         }
+
         body {
             margin: 0;
             padding: 0;
@@ -38,6 +40,7 @@
             justify-content: center;
             overflow-x: hidden;
         }
+
         /* Tela per le braci (embers) animate */
         #embers-canvas {
             position: fixed;
@@ -48,28 +51,34 @@
             z-index: -1;
             pointer-events: none;
         }
+
         .logo-container {
             margin-top: 2rem;
             margin-bottom: 1rem;
             text-align: center;
             z-index: 10;
         }
+
         .logo-container img {
             max-width: 250px;
             filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2));
             animation: float 4s ease-in-out infinite;
         }
+
         @keyframes float {
             0% {
                 transform: translateY(0px);
             }
+
             50% {
                 transform: translateY(-10px);
             }
+
             100% {
                 transform: translateY(0px);
             }
         }
+
         .container {
             width: 90%;
             max-width: 650px;
@@ -89,6 +98,7 @@
             position: relative;
             z-index: 10;
         }
+
         /* Ornate corners */
         .container::before,
         .container::after {
@@ -100,6 +110,7 @@
             opacity: 0.85;
             filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
         }
+
         .container::before {
             top: -10px;
             left: -10px;
@@ -107,6 +118,7 @@
             border-right: none;
             border-radius: 8px 0 0 0;
         }
+
         .container::after {
             bottom: -10px;
             right: -10px;
@@ -114,6 +126,7 @@
             border-left: none;
             border-radius: 0 0 8px 0;
         }
+
         h1,
         h2,
         h3 {
@@ -122,6 +135,7 @@
             text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.9), 0 0 15px rgba(212, 175, 55, 0.3);
             margin-top: 0;
         }
+
         h1 {
             font-size: 2.8rem;
             letter-spacing: 3px;
@@ -133,6 +147,7 @@
             text-transform: uppercase;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
         }
+
         .intro-text-box {
             background: rgba(0, 0, 0, 0.6);
             padding: 1.5rem;
@@ -141,17 +156,20 @@
             margin-bottom: 2rem;
             text-align: left;
         }
+
         .intro-text-box p {
             margin-bottom: 0.8rem;
             text-shadow: 2px 2px 4px #000;
             color: #fff;
         }
+
         p {
             font-size: 1.15rem;
             line-height: 1.6;
             margin-bottom: 1.5rem;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
         }
+
         .btn {
             background: linear-gradient(135deg, var(--primary), #8a1710);
             color: #fff;
@@ -169,12 +187,14 @@
             max-width: 350px;
             margin-top: 1rem;
         }
+
         .btn:hover {
             background: linear-gradient(135deg, var(--primary-hover), #6b0f0b);
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(196, 43, 28, 0.8), 0 0 15px var(--gold);
             border-color: #fff;
         }
+
         .btn:disabled {
             background: #555;
             cursor: not-allowed;
@@ -182,29 +202,35 @@
             box-shadow: none;
             transform: none;
         }
+
         /* Sections */
         .section {
             display: none;
             animation: fadeIn 0.8s ease;
         }
+
         .section.active {
             display: block;
         }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
                 transform: translateY(15px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
+
         /* Form */
         .form-group {
             margin-bottom: 1.2rem;
             text-align: left;
         }
+
         label {
             display: block;
             margin-bottom: 0.5rem;
@@ -214,6 +240,7 @@
             letter-spacing: 1px;
             text-shadow: 1px 1px 2px #000;
         }
+
         input[type="text"],
         input[type="tel"],
         input[type="email"] {
@@ -229,17 +256,20 @@
             box-sizing: border-box;
             transition: all 0.3s ease;
         }
+
         input:focus {
             outline: none;
             background: rgba(20, 10, 0, 0.9);
             border-color: var(--gold);
             box-shadow: inset 0 -15px 25px -15px rgba(212, 175, 55, 0.5);
         }
+
         .radio-group {
             display: flex;
             gap: 1.5rem;
             margin-top: 0.5rem;
         }
+
         .radio-label {
             display: flex;
             align-items: center;
@@ -248,10 +278,12 @@
             font-family: var(--font-body);
             font-size: 1.1rem;
         }
+
         .radio-label input {
             margin-right: 0.5rem;
             accent-color: var(--primary);
         }
+
         /* Wheel of Fortune */
         .wheel-container {
             position: relative;
@@ -259,6 +291,7 @@
             height: 400px;
             margin: 2.5rem auto;
         }
+
         .wheel {
             width: 100%;
             height: 100%;
@@ -273,6 +306,7 @@
                 inset 0 0 50px rgba(0, 0, 0, 0.8);
             background: var(--surface);
         }
+
         .wheel-center-nub {
             position: absolute;
             top: 50%;
@@ -286,6 +320,7 @@
             border: 3px solid #2b1c11;
             box-shadow: 0 0 20px rgba(0, 0, 0, 1);
         }
+
         .pointer {
             position: absolute;
             top: -30px;
@@ -299,6 +334,7 @@
             z-index: 11;
             filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.9));
         }
+
         /* Inner graphics for the slices */
         .slice-content {
             position: absolute;
@@ -318,6 +354,7 @@
             box-sizing: border-box;
             z-index: 2;
         }
+
         /* L'immagine all'interno dello spicchio */
         .slice-img {
             width: 70px;
@@ -328,6 +365,7 @@
             margin-bottom: 5px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
         }
+
         .slice-text {
             font-size: 0.85rem;
             font-weight: bold;
@@ -337,6 +375,7 @@
             line-height: 1.1;
             padding: 0 10px;
         }
+
         .win-message {
             position: fixed;
             top: 50%;
@@ -352,6 +391,7 @@
             box-shadow: 0 0 100px rgba(0, 0, 0, 1), 0 0 20px var(--gold);
             text-align: center;
         }
+
         .win-banner-title {
             font-family: var(--font-title);
             color: var(--gold);
@@ -359,6 +399,7 @@
             margin-bottom: 1.5rem;
             text-transform: uppercase;
         }
+
         .win-img {
             width: 160px;
             height: 160px;
@@ -371,6 +412,7 @@
             background: #fff;
             /* Per far risaltare il fiammifero se ha sfondo bianco */
         }
+
         /* Personaggio Animato (Fiammetta o Tambo) */
         .character-popup {
             display: flex;
@@ -379,6 +421,7 @@
             margin-top: 1.5rem;
             animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+
         .character-popup img {
             width: 180px;
             height: 180px;
@@ -388,6 +431,7 @@
             margin-bottom: 0.5rem;
             object-fit: cover;
         }
+
         .character-speech {
             background: #fff;
             color: #1a100b;
@@ -403,6 +447,7 @@
             margin-bottom: 15px;
             border: 2px solid var(--dark-gold);
         }
+
         .character-speech::before {
             content: '';
             position: absolute;
@@ -414,6 +459,7 @@
             border-color: #fff transparent transparent transparent;
             z-index: 2;
         }
+
         .character-speech::after {
             content: '';
             position: absolute;
@@ -425,6 +471,7 @@
             border-color: var(--dark-gold) transparent transparent transparent;
             z-index: 1;
         }
+
         /* Splash Screen */
         #section-splash {
             position: fixed;
@@ -441,6 +488,7 @@
             text-align: center;
             padding: 2rem;
         }
+
         .splash-img {
             max-width: 90%;
             max-height: 60vh;
@@ -450,20 +498,24 @@
             margin-bottom: 2rem;
             animation: pulse 3s infinite ease-in-out;
         }
+
         @keyframes pulse {
             0% {
                 transform: scale(1);
                 box-shadow: 0 0 50px rgba(212, 175, 55, 0.4);
             }
+
             50% {
                 transform: scale(1.02);
                 box-shadow: 0 0 80px rgba(212, 175, 55, 0.6);
             }
+
             100% {
                 transform: scale(1);
                 box-shadow: 0 0 50px rgba(212, 175, 55, 0.4);
             }
         }
+
         .splash-welcome {
             font-family: var(--font-title);
             color: var(--gold);
@@ -472,12 +524,14 @@
             letter-spacing: 4px;
             text-shadow: 0 0 20px #000;
         }
+
         /* Fine Details */
         .divider {
             height: 2px;
             background: linear-gradient(90deg, transparent, var(--gold), transparent);
             margin: 1.5rem 0;
         }
+
         .loader {
             border: 4px solid rgba(255, 255, 255, 0.1);
             border-top: 4px solid var(--gold);
@@ -489,112 +543,137 @@
             vertical-align: middle;
             margin-right: 10px;
         }
+
         @keyframes spin {
             0% {
                 transform: rotate(0deg);
             }
+
             100% {
                 transform: rotate(360deg);
             }
         }
+
         /* Media queries (Responsiveness) */
         @media(max-width: 768px) {
             .container {
                 padding: 2rem;
                 width: 85%;
             }
+
             h1 {
                 font-size: 2.2rem;
                 letter-spacing: 2px;
             }
+
             .wheel-container {
                 width: 340px;
                 height: 340px;
             }
+
             .slice-content {
                 width: 150px;
                 height: 150px;
                 padding-top: 12px;
             }
+
             .slice-img {
                 width: 60px;
                 height: 60px;
             }
+
             .slice-text {
                 font-size: 0.75rem;
             }
         }
+
         @media(max-width: 480px) {
             .container {
                 padding: 1.5rem 1rem;
                 width: 90%;
             }
+
             h1 {
                 font-size: 1.7rem;
                 letter-spacing: 1px;
             }
+
             p {
                 font-size: 1rem;
                 margin-bottom: 1rem;
             }
+
             .form-group {
                 margin-bottom: 1rem;
             }
+
             .btn {
                 font-size: 1.05rem;
                 padding: 0.8rem 1rem;
             }
+
             .wheel-container {
                 width: 290px;
                 height: 290px;
                 margin: 1.5rem auto;
             }
+
             .slice-content {
                 width: 130px;
                 height: 130px;
                 padding-top: 8px;
             }
+
             .slice-img {
                 width: 45px;
                 height: 45px;
                 margin-bottom: 2px;
             }
+
             .slice-text {
                 font-size: 0.65rem;
                 line-height: 1;
                 padding: 0 5px;
             }
+
             .pointer {
                 top: -20px;
                 border-left: 15px solid transparent;
                 border-right: 15px solid transparent;
                 border-top: 30px solid var(--gold);
             }
+
             .wheel-center-nub {
                 width: 35px;
                 height: 35px;
             }
+
             .character-speech {
                 font-size: 0.95rem;
                 padding: 0.8rem 1rem;
             }
+
             .character-popup img {
                 width: 100px;
                 height: 100px;
             }
+
             .win-message {
                 padding: 1.5rem;
                 width: 92%;
                 max-height: 90vh;
                 overflow-y: auto;
             }
+
             .win-banner-title {
                 font-size: 1.6rem;
             }
+
             .win-img {
                 width: 120px;
                 height: 120px;
             }
+
             .character-popup img {
                 width: 140px;
                 height: 140px;
@@ -602,18 +681,23 @@
         }
     </style>
 </head>
+
 <body>
+
     <!-- SFONDO CON PARTICELLE DI BRACI (ANIMAZIONE LEGGERE E PERFORMANTE) -->
     <canvas id="embers-canvas"></canvas>
+
     <!-- SEZIONE INTRO SPLASH -->
     <div id="section-splash">
         <img src="tambo_flambe.png" alt="Tambo e Flambe" class="splash-img">
         <div class="splash-welcome">Foco Loco ti dà il benvenuto!</div>
     </div>
+
     <div class="logo-container">
         <!-- Logo ufficale FOCOLOCO dal sito -->
         <img src="https://www.focoloco.it/assets/images/logo.png" alt="Foco Loco Logo">
     </div>
+
     <div class="container">
         <!-- SEZIONE 1: INTRO -->
         <div id="section-intro" class="section">
@@ -628,6 +712,7 @@
             </div>
             <button class="btn" onclick="showSection('section-form')">Partecipa al Gioco e vinci</button>
         </div>
+
         <!-- SEZIONE 2: FORM -->
         <div id="section-form" class="section">
             <h2>Lascia la tua firma</h2>
@@ -667,10 +752,12 @@
                 <button type="submit" class="btn" id="submitBtn">Prosegui verso la Ruota</button>
             </form>
         </div>
+
         <!-- SEZIONE 3: ROTA FORTUNAE -->
         <div id="section-wheel" class="section">
             <h2>La Rota Fortunae</h2>
             <p>La sorte ti sorride! Clicca per girare e scoprire il tuo dono.</p>
+
             <div class="wheel-container">
                 <div class="pointer"></div>
                 <div class="wheel" id="wheel">
@@ -678,10 +765,14 @@
                 </div>
                 <div class="wheel-center-nub"></div>
             </div>
+
             <button class="btn" id="spinBtn" onclick="spinWheel()">Gira la Ruota!</button>
+
             <div id="result-message" class="win-message" style="display: none;"></div>
         </div>
+
     </div>
+
     <script>
         // Array dei premi con associazioni testo, colore, ed immagine grafica generata
         const prizesData = [
@@ -710,6 +801,7 @@
                 image: "vino_offerto.png"
             }
         ];
+
         // Personaggi Speciali Animati per la vittoria
         const characters = [
             {
@@ -723,6 +815,7 @@
                 speech: "Hai vinto! Vienimi a cercare per riscuotere e se non mi trovi chiamami! <a href='tel:3281078655' style='color: var(--primary); text-decoration: underline;'>3281078655</a>"
             }
         ];
+
         // --- Splash Transition ---
         function initiateSplashTransition() {
             setTimeout(() => {
@@ -738,22 +831,27 @@
                 }
             }, 3500); // 3.5 seconds splash
         }
+
         // Start splash timer immediately
         initiateSplashTransition();
+
         // --- Gestione UI Sezioni ---
         function showSection(sectionId) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
         }
+
         // --- Setup della Ruota ---
         function setupWheel() {
             const wheel = document.getElementById('wheel');
             const totalSlices = prizesData.length;
             const sliceAngle = 360 / totalSlices;
+
             prizesData.forEach((prize, index) => {
                 // Slices are now empty as per request to be cleaner
                 // We just keep the colored background
             });
+
             // Imposta i colori di background a spicchio
             let gradientStr = [];
             let currentAngle = 0;
@@ -763,19 +861,24 @@
             });
             wheel.style.background = `conic-gradient(${gradientStr.join(', ')})`;
         }
+
         // Init Ruota
         setupWheel();
+
         // --- Logica Invio Dati ---
         async function submitForm(e) {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
             btn.innerHTML = '<span class="loader"></span> Invio al regno...';
+
             const formData = new FormData(document.getElementById('leadForm'));
             const dataObj = {};
             formData.forEach((value, key) => { dataObj[key] = value; });
+
             // SCRIPT URL: Qui dovrai incollare l'URL che otterrai dal punto 3 della guida (Apps Script)
-            const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyt2W6WM2YKqaLmXcQYuNd3zTbgg2AEFmcCBaDNdaEzWLDQhcXaWbV_K4z6RBRXmdDH/exec';
+            const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwdJBNzdm3HC19UI-Cau1N44ol9KjQr0tvHHuqozgTPVfwdJChNhHWpSi1yBD215jEg/exec';
+
             try {
                 // Invio reale dei dati al Google Sheet
                 // Nota: In locale/test senza URL reale questo darà errore, 
@@ -787,10 +890,12 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(dataObj)
                 });
+
                 // Mostriamo la ruota dopo un piccolo feedback visivo
                 setTimeout(() => {
                     showSection('section-wheel');
                 }, 500);
+
             } catch (error) {
                 console.error('Errore:', error);
                 // In fiera, se c'è un calo di rete, permettiamo comunque di giocare dopo l'errore
@@ -798,30 +903,41 @@
                 showSection('section-wheel');
             }
         }
+
         // --- Logica Girare la Ruota ---
         let isSpinning = false;
         let nextCharacterIndex = 0; // Per alternarli uno alla volta
+
         function spinWheel() {
             if (isSpinning) return;
             isSpinning = true;
+
             const wheel = document.getElementById('wheel');
             const spinBtn = document.getElementById('spinBtn');
             const resultDiv = document.getElementById('result-message');
+
             spinBtn.disabled = true;
             resultDiv.style.display = 'none';
+
             const randomPrizeIndex = Math.floor(Math.random() * prizesData.length);
             const sliceAngle = 360 / prizesData.length;
+
             // L'angolo sul quale fermarsi (il centro dello spicchio vincente alle "ore 12" o 0 gradi)
             const targetRotation = 360 - (randomPrizeIndex * sliceAngle) - (sliceAngle / 2);
+
             const spins = 1800; // 5 giri completi
             const finalRotation = spins + targetRotation;
+
             wheel.style.transition = 'transform 5s cubic-bezier(0.25, 0.1, 0.15, 1)';
             wheel.style.transform = `rotate(${finalRotation}deg)`;
+
             setTimeout(() => {
                 const wonPrize = prizesData[randomPrizeIndex];
+
                 // Alternanza fissa tra Fiammetta e Tambo
                 const char = characters[nextCharacterIndex];
                 nextCharacterIndex = (nextCharacterIndex + 1) % characters.length;
+
                 resultDiv.innerHTML = `
                 <div class="win-banner-title">Dono Conquistato!</div>
                 <div style="font-size: 1.4rem; color: #fff; margin-bottom: 1rem;">Hai ottenuto:</div>
@@ -838,22 +954,28 @@
                     </a>
                 </div>
                 `;
+
                 resultDiv.style.display = 'block';
                 resultDiv.style.animation = 'fadeIn 1s ease';
+
                 wheel.style.transition = 'none';
                 wheel.style.transform = `rotate(${finalRotation % 360}deg)`;
+
             }, 5000);
         }
+
         // --- Embers Animation System ---
         const canvas = document.getElementById('embers-canvas');
         const ctx = canvas.getContext('2d');
         let width = canvas.width = window.innerWidth;
         let height = canvas.height = window.innerHeight;
         const particles = [];
+
         window.addEventListener('resize', () => {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
         });
+
         class Ember {
             constructor() {
                 this.x = Math.random() * width;
@@ -882,7 +1004,9 @@
                 ctx.fill();
             }
         }
+
         for (let i = 0; i < 70; i++) particles.push(new Ember());
+
         function loopEmbers() {
             ctx.clearRect(0, 0, width, height);
             particles.forEach(p => { p.update(); p.draw(); });
@@ -891,4 +1015,5 @@
         loopEmbers();
     </script>
 </body>
+
 </html>
