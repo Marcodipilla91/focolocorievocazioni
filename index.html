@@ -220,6 +220,27 @@
             }
         }
 
+        @keyframes fadeInCenter {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        @keyframes popUpBounce {
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .btn-popup {
+            animation: popUpBounce 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+        }
+
         /* Form */
         .form-group {
             margin-bottom: 1.2rem;
@@ -378,12 +399,12 @@
             transform: translate(-50%, -50%);
             width: 85%;
             max-width: 500px;
-            z-index: 1000;
+            z-index: 9999;
             background: linear-gradient(145deg, #2b1f18, #1a100b);
             padding: 2.5rem;
             border-radius: 15px;
             border: 3px solid var(--gold);
-            box-shadow: 0 0 100px rgba(0, 0, 0, 1), 0 0 20px var(--gold);
+            box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.85), 0 0 50px var(--gold);
             text-align: center;
         }
 
@@ -467,8 +488,8 @@
             z-index: 1;
         }
 
-        /* Splash Screen */
-        #section-splash {
+        /* Splash Screen overlay layout */
+        .splash-layout {
             position: fixed;
             top: 0;
             left: 0;
@@ -476,12 +497,15 @@
             bottom: 0;
             background: radial-gradient(circle, #2b1f18, #000);
             z-index: 10000;
-            display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
             padding: 2rem;
+        }
+        
+        .section.active.splash-layout {
+            display: flex;
         }
 
         .splash-img {
@@ -509,6 +533,16 @@
                 transform: scale(1);
                 box-shadow: 0 0 50px rgba(212, 175, 55, 0.4);
             }
+        }
+
+        .pulse-btn {
+            animation: pulse-button 1.5s infinite;
+        }
+
+        @keyframes pulse-button {
+            0% { transform: scale(1); box-shadow: 0 0 15px rgba(196, 43, 28, 0.7); }
+            50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(196, 43, 28, 1); }
+            100% { transform: scale(1); box-shadow: 0 0 15px rgba(196, 43, 28, 0.7); }
         }
 
         .splash-welcome {
@@ -682,52 +716,34 @@
     <!-- SFONDO CON PARTICELLE DI BRACI (ANIMAZIONE LEGGERE E PERFORMANTE) -->
     <canvas id="embers-canvas"></canvas>
 
-    <!-- SEZIONE INTRO SPLASH -->
-    <div id="section-splash">
-        <img src="tambo_flambe.png" alt="Tambo e Flambe" class="splash-img">
-        <div class="splash-welcome">Foco Loco ti dà il benvenuto!</div>
-    </div>
-
     <div class="logo-container">
         <!-- Logo ufficale FOCOLOCO dal sito -->
         <img src="https://www.focoloco.it/assets/images/logo.png" alt="Foco Loco Logo">
     </div>
 
-    <div class="container">
-        <!-- SEZIONE 1: INTRO -->
-        <div id="section-intro" class="section">
-            <h1>Foco Loco ti dà il benvenuto!</h1>
-            <div class="divider"></div>
-            <div class="intro-text-box">
-                <p>Sei giunto alla fiera <strong>Armi e Bagagli di Piacenza</strong> ed hai incrociato il cammino di
-                    <strong>Foco Loco</strong>.
-                </p>
-                <p>I nostri giullari ridono, i cavalieri gioiscono! Abbiamo in serbo per te sorprese e meraviglie, ma
-                    solo i più audaci osano sfidare la sorte.</p>
-            </div>
-            <button class="btn" onclick="showSection('section-form')">Partecipa al Gioco e vinci</button>
+    <!-- SEZIONE 1: INTRO (Layout Originale Splash Screen + Bottone) -->
+        <div id="section-intro" class="section active splash-layout">
+        <img src="tambo_flambe.png" alt="Tambo e Flambe" class="splash-img" onerror="this.onerror=null;this.src='Tambo E Flambe.png';" style="background: #fff; max-height: 45vh;">
+        <div class="splash-welcome" style="margin-bottom: 0;">Foco Loco ti dà il benvenuto!</div>
+        
+        <div id="btn-wrapper" style="opacity: 0; transform: scale(0);">
+            <button class="btn pulse-btn" onclick="showSection('section-form')" style="padding: 1.2rem 2rem; font-size: 1.3rem; margin-top: 2.5rem; border-radius: 8px;">Partecipa al Gioco e Vinci</button>
         </div>
+    </div>
+
+    <div class="container">
 
         <!-- SEZIONE 2: FORM -->
         <div id="section-form" class="section">
-            <h2>Lascia la tua firma</h2>
-            <p>Prima di girare la sacra Rota Fortunae, facci sapere chi sei.</p>
+            <h2 style="margin-top: 0; margin-bottom: 1rem;">La Sacra Rota ti attende</h2>
             <form id="leadForm" onsubmit="submitForm(event)">
                 <div class="form-group">
-                    <label for="nome">Nome *</label>
+                    <label for="nome">Nome completo *</label>
                     <input type="text" id="nome" name="nome" required>
-                </div>
-                <div class="form-group">
-                    <label for="cognome">Cognome *</label>
-                    <input type="text" id="cognome" name="cognome" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email *</label>
                     <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="organizzazione">Organizzazione / Compagnia *</label>
-                    <input type="text" id="organizzazione" name="organizzazione" required>
                 </div>
                 <div class="form-group">
                     <label for="cellulare">Cellulare (Facoltativo)</label>
@@ -811,24 +827,18 @@
             }
         ];
 
-        // --- Splash Transition ---
-        function initiateSplashTransition() {
+        // --- Intro Button Sequence ---
+        function initiateIntroSequence() {
+            // Mostra il pulsante a popup dopo 2 secondi
             setTimeout(() => {
-                const splash = document.getElementById('section-splash');
-                if (splash) {
-                    splash.style.transition = 'opacity 1s ease';
-                    splash.style.opacity = '0';
-                    setTimeout(() => {
-                        splash.style.display = 'none';
-                        const intro = document.getElementById('section-intro');
-                        if (intro) intro.classList.add('active');
-                    }, 1000);
+                const wrapper = document.getElementById('btn-wrapper');
+                if (wrapper) {
+                    wrapper.classList.add('btn-popup');
                 }
-            }, 3500); // 3.5 seconds splash
+            }, 2000); 
         }
 
-        // Start splash timer immediately
-        initiateSplashTransition();
+        window.addEventListener('load', initiateIntroSequence);
 
         // --- Gestione UI Sezioni ---
         function showSection(sectionId) {
@@ -951,10 +961,15 @@
                 `;
 
                 resultDiv.style.display = 'block';
-                resultDiv.style.animation = 'fadeIn 1s ease';
+                resultDiv.style.animation = 'fadeInCenter 0.8s ease forwards';
 
                 wheel.style.transition = 'none';
                 wheel.style.transform = `rotate(${finalRotation % 360}deg)`;
+
+                // Auto-redirect ad Instagram 3 secondi dopo aver visualizzato in centro il premio
+                setTimeout(() => {
+                    window.location.href = "https://www.instagram.com/focoloco_rievocazioni?utm_source=ig_web_button_share_sheet&igsh=ODdmZWVhMTFiMw==";
+                }, 3000);
 
             }, 5000);
         }
